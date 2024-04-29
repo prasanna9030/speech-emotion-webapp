@@ -1,13 +1,13 @@
-numpy==1.19.2
+numpy==1.26.4
 pandas
 matplotlib
 Pillow
-opencv-python-headless==4.5.1.48
+opencv-python-headless==4.9.0.80
 plotly
 requests
-librosa==0.8.0
+librosa==0.10.1
 streamlit
-tensorflow-cpu==2.4.1
+tensorflow-cpu==2.16.1
 
 # numpy
 # pandas==1.2.4
