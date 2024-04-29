@@ -95,7 +95,7 @@ def get_melspec(audio):
 # @st.cache
 def get_mfccs(audio, limit):
     y, sr = librosa.load(audio)
-    a = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
+    a = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=40)
     if a.shape[1] > limit:
         mfccs = a[:, :limit]
     elif a.shape[1] < limit:
@@ -189,9 +189,9 @@ def main():
                         try:
                             wav, sr = librosa.load(path, sr=44100)
                             Xdb = get_melspec(path)[1]
-                            mfccs = librosa.feature.mfcc(wav, sr=sr)
-                            # # display audio
-                            # st.audio(audio_file, format='audio/wav', start_time=0)
+                            mfccs = librosa.feature.mfcc(y=wav, sr=sr)
+                            # display audio
+                            st.audio(audio_file, format='audio/wav', start_time=0)
                         except Exception as e:
                             audio_file = None
                             st.error(f"Error {e} - wrong format of the file. Try another .wav file.")
@@ -199,27 +199,21 @@ def main():
                         st.error("Unknown error")
                 else:
                     if st.button("Try test file"):
-                        wav, sr = librosa.load("test.wav", sr=44100)
-                        Xdb = get_melspec("test.wav")[1]
-                        mfccs = librosa.feature.mfcc(wav, sr=sr)
+                        wav, sr = librosa.load("C:/Users/prasa/PycharmProjects/speech-emotion-webapp/test.wav", sr=44100)
+                        Xdb = get_melspec("C:/Users/prasa/PycharmProjects/speech-emotion-webapp/test.wav")[1]
+                        mfccs = librosa.feature.mfcc(y=wav, sr=sr)
                         # display audio
-                        st.audio("test.wav", format='audio/wav', start_time=0)
-                        path = "test.wav"
+                        st.audio("C:/Users/prasa/PycharmProjects/speech-emotion-webapp/test.wav", format='audio/wav', start_time=0)
+                        path = "C:/Users/prasa/PycharmProjects/speech-emotion-webapp/test.wav"
                         audio_file = "test"
             with col2:
                 if audio_file is not None:
-                    fig = plt.figure(figsize=(10, 2))
-                    fig.set_facecolor('#d1d1e0')
-                    plt.title("Wave-form")
-                    librosa.display.waveplot(wav, sr=44100)
-                    plt.gca().axes.get_yaxis().set_visible(False)
-                    plt.gca().axes.get_xaxis().set_visible(False)
-                    plt.gca().axes.spines["right"].set_visible(False)
-                    plt.gca().axes.spines["left"].set_visible(False)
-                    plt.gca().axes.spines["top"].set_visible(False)
-                    plt.gca().axes.spines["bottom"].set_visible(False)
-                    plt.gca().axes.set_facecolor('#d1d1e0')
-                    st.write(fig)
+                    plt.figure(figsize=(10, 4))
+                    plt.plot(wav)
+                    plt.xlabel('Time')
+                    plt.ylabel('Amplitude')
+                    plt.title('Waveform')
+                    plt.show()
                 else:
                     pass
             #     st.write("Record audio file")
@@ -397,28 +391,17 @@ def main():
         import pandas as pd
         import plotly.express as px
         st.title("Project description")
-        st.subheader("GitHub")
-        link = '[GitHub repository of the web-application]' \
-               '(https://github.com/CyberMaryVer/speech-emotion-webapp)'
-        st.markdown(link, unsafe_allow_html=True)
 
-        st.subheader("Theory")
-        link = '[Theory behind - Medium article]' \
-               '(https://talbaram3192.medium.com/classifying-emotions-using-audio-recordings-and-python-434e748a95eb)'
-        st.markdown(link + ":clap::clap::clap: Tal!", unsafe_allow_html=True)
-        with st.expander("See Wikipedia definition"):
-            components.iframe("https://en.wikipedia.org/wiki/Emotion_recognition",
-                              height=320, scrolling=True)
 
         st.subheader("Dataset")
         txt = """
-            This web-application is a part of the final **Data Mining** project for **ITC Fellow Program 2020**. 
+            This web-application is a part of the final *Data Mining* project for *ITC Fellow Program 2020*. 
 
             Datasets used in this project
-            * Crowd-sourced Emotional Mutimodal Actors Dataset (**Crema-D**)
-            * Ryerson Audio-Visual Database of Emotional Speech and Song (**Ravdess**)
-            * Surrey Audio-Visual Expressed Emotion (**Savee**)
-            * Toronto emotional speech set (**Tess**)    
+            * Crowd-sourced Emotional Mutimodal Actors Dataset (*Crema-D*)
+            * Ryerson Audio-Visual Database of Emotional Speech and Song (*Ravdess*)
+            * Surrey Audio-Visual Expressed Emotion (*Savee*)
+            * Toronto emotional speech set (*Tess*)    
             """
         st.markdown(txt, unsafe_allow_html=True)
 
@@ -426,31 +409,28 @@ def main():
         fig = px.violin(df, y="source", x="emotion4", color="actors", box=True, points="all", hover_data=df.columns)
         st.plotly_chart(fig, use_container_width=True)
 
-        st.subheader("FYI")
-        st.write("Since we are currently using a free tier instance of AWS, "
-                 "we disabled mel-spec and ensemble models.\n\n"
-                 "If you want to try them we recommend to clone our GitHub repo")
-        st.code("git clone https://github.com/CyberMaryVer/speech-emotion-webapp.git", language='bash')
 
-        st.write("After that, just uncomment the relevant sections in the app.py file "
-                 "to use these models:")
 
     elif website_menu == "Our team":
         st.subheader("Our team")
         st.balloons()
         col1, col2 = st.columns([3, 2])
         with col1:
-            st.info("maria.s.startseva@gmail.com")
-            st.info("talbaram3192@gmail.com")
-            st.info("asherholder123@gmail.com")
+            st.info("prasannasannedi@gmail.com")
+            st.info("patnalabalatripurasundari@gmail.com")
+            st.info("mounika.24660@gmail.com")
+            st.info("pasupuletidath@gmail.com")
         with col2:
             liimg = Image.open("images/LI-Logo.png")
             st.image(liimg)
-            st.markdown(f""":speech_balloon: [Maria Startseva](https://www.linkedin.com/in/maria-startseva)""",
+            st.markdown(f""":speech_balloon: [Lakshmi Prasanna]( https://www.linkedin.com/in/prasanna-sannedi-8313502b1
+)""",
                         unsafe_allow_html=True)
-            st.markdown(f""":speech_balloon: [Tal Baram](https://www.linkedin.com/in/tal-baram-b00b66180)""",
+            st.markdown(f""":speech_balloon: [ Bala Tripura Sundari]( https://www.linkedin.com/in/bala-tripura-sundari-patnala-8110252a7)""",
                         unsafe_allow_html=True)
-            st.markdown(f""":speech_balloon: [Asher Holder](https://www.linkedin.com/in/asher-holder-526a05173)""",
+            st.markdown(f""":speech_balloon: [Mounika](https://www.linkedin.com/in/mounika-ch-a8a095293)""",
+                        unsafe_allow_html=True)
+            st.markdown(f""":speech_balloon: [Surya Datha](https://www.linkedin.com/in/datha)""",
                         unsafe_allow_html=True)
 
     elif website_menu == "Leave feedback":
@@ -500,11 +480,11 @@ def main():
                         except Exception as e:
                             a = np.random.choice(list(quotes.keys()), 1)[0]
                             quote, author = a, quotes[a]
-                    st.markdown(f"## *{quote}*")
-                    st.markdown(f"### ***{author}***")
+                    st.markdown(f"## {quote}")
+                    st.markdown(f"### *{author}*")
                 with col2:
                     st.image(image=f"https://picsum.photos/800/600?random={n}")
 
 
-if __name__ == '__main__':
+if __name__ == '_main_':
     main()
